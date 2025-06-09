@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: haru.local.db
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    command:
+      - --skip-character-set-client-handshake
+    ports:
+      - "${DB_PORT}:3306"
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: haru.local.redis
+    command: /bin/sh -c "redis-server --requirepass ${REDIS_PASSWORD}"
+    ports:
+      - "${REDIS_PORT}:6379"
