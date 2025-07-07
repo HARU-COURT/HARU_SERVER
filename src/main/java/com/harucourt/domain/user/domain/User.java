@@ -1,4 +1,4 @@
-package com.harucourt.domain.user;
+package com.harucourt.domain.user.domain;
 
 import com.harucourt.shared.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,6 +20,9 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Column(unique = true, nullable = false)
+    private UUID uuid;
+
+    @Column(unique = true, nullable = false)
     @Email
     private String email;
 
@@ -25,6 +30,7 @@ public class User extends BaseTimeEntity {
     private String name;
 
     public User(String email, String name) {
+        this.uuid = UUID.randomUUID();
         this.email = email;
         this.name = name;
     }
