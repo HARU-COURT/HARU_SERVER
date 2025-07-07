@@ -17,3 +17,9 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+
+jwt:
+  access-expiration-time: 3600000 # 1시간
+  refresh-expiration-time: 2592000000 # 30일
+  prefix: Bearer
+  secret: ${JWT_SECRET}
