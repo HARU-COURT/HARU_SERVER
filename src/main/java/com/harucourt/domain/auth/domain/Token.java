@@ -1,10 +1,12 @@
 package com.harucourt.domain.auth.domain;
 
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -12,12 +14,12 @@ import org.springframework.data.redis.core.RedisHash;
 public class Token {
 
     @Id
-    private String email;
+    private UUID uuid;
 
     private String token;
 
-    public Token(String email, String token) {
-        this.email = email;
+    public Token(UUID uuid, String token) {
+        this.uuid = uuid;
         this.token = token;
     }
 }

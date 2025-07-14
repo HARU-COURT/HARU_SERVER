@@ -27,16 +27,16 @@ public class User extends BaseTimeEntity {
     private String email;
 
     @Column(nullable = false)
-    private String name;
+    private String username;
 
-    public User(String email, String name) {
+    public User(String email, String username) {
         this.uuid = UUID.randomUUID();
         this.email = email;
-        this.name = name;
+        this.username = username;
     }
 
     public void update(String email, String name) {
         this.email = email;
-        this.name = name;
+        this.username = name;
     }
 }
