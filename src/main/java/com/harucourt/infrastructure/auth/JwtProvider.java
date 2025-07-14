@@ -2,7 +2,7 @@ package com.harucourt.infrastructure.auth;
 
 import com.harucourt.domain.auth.domain.Token;
 import com.harucourt.domain.auth.domain.type.TokenType;
-import com.harucourt.domain.auth.exception.EmptyTokenException;
+import com.harucourt.domain.auth.exception.ExpiredTokenException;
 import com.harucourt.domain.auth.exception.InvalidTokenException;
 import com.harucourt.infrastructure.persistence.auth.TokenRepository;
 import com.harucourt.shared.config.properties.JwtProperties;
@@ -79,6 +79,10 @@ public class JwtProvider {
         return token;
     }
 
+    public UUID getUuid(String token) {
+        return UUID.fromString(extractClaims(token).getSubject());
+    }
+
     public String getEmail(String token) {
         return extractClaims(token).get("email", String.class);
     }
@@ -87,8 +91,12 @@ public class JwtProvider {
         return extractClaims(token).get("name", String.class);
     }
 
-    public UUID getUuid(String token) {
-        return UUID.fromString(extractClaims(token).getSubject());
+    public TokenType getType(String token) {
+        try {
+            return TokenType.valueOf(extractClaims(token).get("type", String.class));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     private Claims extractClaims(String token) {
@@ -99,7 +107,7 @@ public class JwtProvider {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (ExpiredJwtException e) {
-            throw new EmptyTokenException();
+            throw new ExpiredTokenException();
         } catch (Exception e) {
             throw new InvalidTokenException();
         }
