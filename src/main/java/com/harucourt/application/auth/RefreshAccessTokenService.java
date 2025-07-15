@@ -5,6 +5,7 @@ import com.harucourt.domain.auth.domain.type.TokenType;
 import com.harucourt.domain.auth.exception.ExpiredTokenException;
 import com.harucourt.domain.auth.exception.InvalidTokenException;
 import com.harucourt.domain.user.domain.User;
+import com.harucourt.domain.user.exception.UserNotFoundException;
 import com.harucourt.infrastructure.auth.JwtProvider;
 import com.harucourt.infrastructure.persistence.auth.TokenRepository;
 import com.harucourt.infrastructure.persistence.user.UserRepository;
@@ -28,7 +29,8 @@ public class RefreshAccessTokenService {
         Token token = resolveToken(request.refreshToken());
         UUID uuid = token.getUuid();
 
-        User user = userRepository.findByUuid(uuid);
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(UserNotFoundException::new);
 
         return new AccessTokenResponse(jwtProvider.generateAccessToken(uuid, user.getEmail(), user.getUsername()));
     }
