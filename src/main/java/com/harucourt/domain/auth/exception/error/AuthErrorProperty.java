@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum AuthErrorProperty implements ErrorProperty {
 
-    EMPTY_TOKEN(HttpStatus.UNAUTHORIZED, "권한이 없습니다."),
+    EMPTY_TOKEN(HttpStatus.UNAUTHORIZED, "인증이 필요합니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다."),
     ;

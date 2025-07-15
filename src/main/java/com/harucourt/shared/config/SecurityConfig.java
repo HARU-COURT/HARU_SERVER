@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.PathMatcher;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @RequiredArgsConstructor
 @Configuration
@@ -22,7 +24,7 @@ public class SecurityConfig {
     private final JwtProperties jwtProperties;
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    public SecurityFilterChain configure(HttpSecurity http, PathMatcher pathMatcher, HandlerExceptionResolver handlerExceptionResolver) throws Exception {
         http
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
@@ -32,7 +34,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(
-                        new JwtFilter(jwtProvider, jwtProperties),
+                        new JwtFilter(jwtProvider, jwtProperties, pathMatcher, handlerExceptionResolver),
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .authorizeHttpRequests(request ->
