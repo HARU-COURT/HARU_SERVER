@@ -6,10 +6,10 @@ import com.harucourt.presentation.auth.dto.response.AccessTokenResponse;
 import com.harucourt.presentation.user.dto.request.UpdateUserRequest;
 import com.harucourt.shared.auth.CustomUserDetails;
 import com.harucourt.shared.response.CommonResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +23,7 @@ public class UserController {
     @PutMapping
     public ResponseEntity<CommonResponse<AccessTokenResponse>> updateUser(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestBody @Validated UpdateUserRequest request
+            @RequestBody @Valid UpdateUserRequest request
     ) {
         AccessTokenResponse response = updateUserService.execute(userDetails, request);
 

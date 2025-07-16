@@ -9,10 +9,10 @@ import com.harucourt.presentation.auth.dto.response.AccessTokenResponse;
 import com.harucourt.presentation.auth.dto.response.TokenResponse;
 import com.harucourt.shared.auth.CustomUserDetails;
 import com.harucourt.shared.response.CommonResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -28,14 +28,14 @@ public class AuthController {
     private final LogOutService logOutService;
 
     @PostMapping("/google")
-    public ResponseEntity<CommonResponse<TokenResponse>> googleAuth(@RequestBody @Validated LogInGoogleRequest request) throws GeneralSecurityException, IOException {
+    public ResponseEntity<CommonResponse<TokenResponse>> googleAuth(@RequestBody @Valid LogInGoogleRequest request) throws GeneralSecurityException, IOException {
         TokenResponse response = googleAuthService.execute(request);
 
         return ResponseEntity.ok(CommonResponse.ok(response));
     }
 
     @PatchMapping
-    public ResponseEntity<CommonResponse<AccessTokenResponse>> refreshAccessToken(@RequestBody @Validated RefreshTokenRequest request) {
+    public ResponseEntity<CommonResponse<AccessTokenResponse>> refreshAccessToken(@RequestBody @Valid RefreshTokenRequest request) {
         AccessTokenResponse response = refreshAccessTokenService.execute(request);
 
         return ResponseEntity.ok(CommonResponse.ok(response));
