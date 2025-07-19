@@ -1,7 +1,6 @@
 package com.harucourt.application.worry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.harucourt.domain.user.domain.User;
 import com.harucourt.domain.user.exception.UserNotFoundException;
 import com.harucourt.domain.worry.domain.Worry;
@@ -30,7 +29,6 @@ public class CreateWorryService {
 
     private final WorryRepository worryRepository;
     private final UserRepository userRepository;
-    private final ObjectMapper objectMapper;
 
     public Long execute(CustomUserDetails userDetails, CreateWorryRequest request) throws JsonProcessingException {
         User user = userRepository.findByUuid(userDetails.uuid())
@@ -52,8 +50,6 @@ public class CreateWorryService {
                 .flatMap(content -> content.outputText().stream())
                 .findFirst()
                 .orElseThrow(() -> new HaruException(GlobalErrorProperty.INTERNAL_SERVER_ERROR));
-
-        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(judge));
 
         Worry worry = worryRepository.save(new Worry(
                 request.categoryList(),
