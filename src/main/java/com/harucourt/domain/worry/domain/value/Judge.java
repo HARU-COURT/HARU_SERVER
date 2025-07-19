@@ -21,15 +21,15 @@ public class Judge {
     @JsonPropertyDescription("유죄면 GUILTY, 무죄면 NOT_GUILTY")
     private JudgeType judgeType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT", length = 1000)
     @JsonPropertyDescription("두 관점을 종합해 최종적인 결론을 도출하고 이유를 설명)")
     private String judge;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT", length = 1000)
     @JsonPropertyDescription("고민자의 입장을 옹호")
     private String lawyer;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT", length = 1000)
     @JsonPropertyDescription("문제점을 비판적으로 제기")
     private String prosecutor;
 }
