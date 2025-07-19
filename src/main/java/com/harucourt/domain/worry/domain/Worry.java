@@ -39,7 +39,7 @@ public class Worry extends BaseTimeEntity {
     @Embedded
     private Judge judge;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
