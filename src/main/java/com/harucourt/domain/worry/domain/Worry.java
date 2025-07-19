@@ -1,7 +1,6 @@
 package com.harucourt.domain.worry.domain;
 
 import com.harucourt.domain.user.domain.User;
-import com.harucourt.domain.worry.domain.type.JudgeType;
 import com.harucourt.domain.worry.domain.type.WorryCategory;
 import com.harucourt.domain.worry.domain.type.ResponseMode;
 import com.harucourt.domain.worry.domain.value.Judge;
