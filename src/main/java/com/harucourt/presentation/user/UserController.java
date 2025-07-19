@@ -1,9 +1,11 @@
 package com.harucourt.presentation.user;
 
 import com.harucourt.application.user.DeleteUserService;
+import com.harucourt.application.user.GetUserInfoService;
 import com.harucourt.application.user.UpdateUserService;
 import com.harucourt.presentation.auth.dto.response.AccessTokenResponse;
 import com.harucourt.presentation.user.dto.request.UpdateUserRequest;
+import com.harucourt.presentation.user.dto.response.UserInfoResponse;
 import com.harucourt.shared.auth.CustomUserDetails;
 import com.harucourt.shared.response.CommonResponse;
 import jakarta.validation.Valid;
@@ -19,6 +21,7 @@ public class UserController {
 
     private final UpdateUserService updateUserService;
     private final DeleteUserService deleteUserService;
+    private final GetUserInfoService getUserInfoService;
 
     @PutMapping
     public ResponseEntity<CommonResponse<AccessTokenResponse>> updateUser(
@@ -26,6 +29,15 @@ public class UserController {
             @RequestBody @Valid UpdateUserRequest request
     ) {
         AccessTokenResponse response = updateUserService.execute(userDetails, request);
+
+        return ResponseEntity.ok(CommonResponse.ok(response));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<CommonResponse<UserInfoResponse>> getUserInfo(
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        UserInfoResponse response = getUserInfoService.execute(userDetails);
 
         return ResponseEntity.ok(CommonResponse.ok(response));
     }
