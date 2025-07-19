@@ -33,25 +33,10 @@ public class CreateWorryService {
     private final ObjectMapper objectMapper;
 
     public Long execute(CustomUserDetails userDetails, CreateWorryRequest request) throws JsonProcessingException {
-
         User user = userRepository.findByUuid(userDetails.uuid())
                 .orElseThrow(UserNotFoundException::new);
 
-        String input = String.format(
-                """
-                카테고리: %s
-                
-                고민 제목:
-                %s
-                
-                고민 내용:
-                %s
-                
-                응답 모드: %s
-                
-                응답 모드에 따라 어조, 분석 방식, 말투를 조정해서 판결을 내려줘.
-                """,
-                formatCategoryList(request.categoryList()), request.title(), request.content(), request.responseMode().getDescription());
+        String input = generatePrompt(request);
 
         OpenAIClient client = OpenAIOkHttpClient.fromEnv();
 
@@ -80,6 +65,24 @@ public class CreateWorryService {
         ));
 
         return worry.getId();
+    }
+
+    private String generatePrompt(CreateWorryRequest request) {
+        return String.format(
+                """
+                        카테고리: %s
+                        
+                        고민 제목:
+                        %s
+                        
+                        고민 내용:
+                        %s
+                        
+                        응답 모드: %s
+                        
+                        응답 모드에 따라 어조, 분석 방식, 말투를 조정해서 판결을 내려줘.
+                        """,
+                formatCategoryList(request.categoryList()), request.title(), request.content(), request.responseMode().getDescription());
     }
 
     private String formatCategoryList(List<WorryCategory> categoryList) {
